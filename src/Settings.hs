@@ -50,6 +50,11 @@ getIntegerPackage = expr (integerLibrary =<< flavour)
 
 programContext :: Stage -> Package -> Action Context
 programContext stage pkg = do
+    -- FIXME: For now, we only return a profiling-enabled context
+    -- when the package is GHC. This is fine as a default but
+    -- it might be nice to be able to override that, say if
+    -- someone wants to get some profiling information on
+    -- ghc-pkg or one of the other tools GHC comes with.
     profiled <- ghcProfiled <$> flavour
     return $ if pkg == ghc && profiled && stage > Stage0
              then Context stage pkg profiling

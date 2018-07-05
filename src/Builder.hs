@@ -150,6 +150,8 @@ instance NFData   Builder
 -- 'Stage' and GHC 'Package').
 builderProvenance :: Builder -> Maybe Context
 builderProvenance = \case
+    -- FIXME: Would we want some of these contexts
+    -- to depend on --flavour? Ghc's?
     DeriveConstants  -> context Stage0 deriveConstants
     GenApply         -> context Stage0 genapply
     GenPrimopCode    -> context Stage0 genprimopcode

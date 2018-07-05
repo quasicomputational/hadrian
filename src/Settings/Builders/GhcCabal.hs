@@ -73,11 +73,22 @@ libraryArgs = do
            then  "--enable-library-for-ghci"
            else "--disable-library-for-ghci"
          , if or [Profiling `wayUnit` way | way <- ways]
+           -- TODO: Cabal supports --[library-]profiling-detail=<level>
+           -- where <level> is one of default, none, exported-functions,
+           -- toplevel-functions, all-functions). Shall we use this, give
+           -- a chance for users to specify a particular level themselves?
+           -- How?
            then  "--enable-library-profiling"
            else "--disable-library-profiling"
          , if or [Dynamic `wayUnit` way | way <- ways]
            then  "--enable-shared"
-           else "--disable-shared" ]
+           else "--disable-shared"
+         , if or [Debug `wayUnit` way | way <- ways]
+           -- TOOD: Cabal actually supports --enable-debug-info=<n>, with
+           -- n between 0 and 3, default is 0 (little debug info). How can
+           -- we make this easily configurable for the user?
+           then "--enable-debug-info"
+           else "--disable-debug-info" ]
 
 -- TODO: LD_OPTS?
 configureArgs :: Args

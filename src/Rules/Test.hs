@@ -153,10 +153,11 @@ ghcConfigProgPath = "test/bin/ghc-config"
 ghcConfigPath :: FilePath
 ghcConfigPath = "test/ghcconfig"
 
+-- Note: needing pkgConfFile is enough, the entire logic
+-- is then implemented in Rules.Register.buildConf, which
+-- makes sure to produce all ways dictated by the flavour
+-- we're building with, for all libraries.
 needfile :: Stage -> Package -> Action FilePath
 needfile stage pkg
---TODO (Alp): we might sometimes need more than vanilla!
--- This should therefore depend on what test ways
--- we are going to use, I suppose?
-    | isLibrary pkg = pkgConfFile (Context stage pkg profilingDynamic)
+    | isLibrary pkg = pkgConfFile (Context stage pkg vanilla)
     | otherwise = programPath =<< programContext stage pkg
