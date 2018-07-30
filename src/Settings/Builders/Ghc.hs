@@ -48,6 +48,7 @@ ghcLinkArgs = builder (Ghc LinkHs) ? do
     gmpLibs <- notStage0 ? intLib == integerGmp ? pure ["gmp"]
     mconcat [ (Dynamic `wayUnit` way) ?
               pure [ "-shared", "-dynamic", "-dynload", "deploy" ]
+            , wayGhcArgs
             , arg "-no-auto-link-packages"
             ,      nonHsMainPackage pkg  ? arg "-no-hs-main"
             , not (nonHsMainPackage pkg) ? arg "-rtsopts"
